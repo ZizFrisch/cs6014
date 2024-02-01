@@ -1,3 +1,7 @@
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
+
 package DNSResolver;
 
 import java.io.*;
@@ -24,10 +28,13 @@ public class DNSRecord {
     }
 
     /**
-     * GOT THE MARK/RESET BIT FROM CHUNHAO
+     * this will parse the bytes in the record portion of the message to make sense of them
      * @param inputStream
+     *      this is the stream we will read from
      * @param message
+     *      this is the message we are reading from
      * @return
+     *      returns a new DNSRecord object that holds the new decoded record
      * @throws IOException
      */
     public static DNSRecord decodeRecord(InputStream inputStream, DNSMessage message) throws IOException {
@@ -63,6 +70,14 @@ public class DNSRecord {
         return record;
     }
 
+    /**
+     * this method writes the bytes from the record
+     * @param outputStream
+     *      the stream we will be writing to
+     * @param map
+     *      this holds the locations of the domain names that we have already seen
+     * @throws IOException
+     */
     public void writeBytes(ByteArrayOutputStream outputStream, HashMap<String,Integer> map) throws IOException {
         //write domain name, call from message class
         DNSMessage.writeDomainName(outputStream, map, domainName_);
@@ -83,6 +98,7 @@ public class DNSRecord {
     /**
      * return whether the creation date + the time to live is after the current time. The Date and Calendar classes will be useful for this.
      * @return
+     *      true if it is expired, false if it is not
      */
     boolean isExpired(){
         //ttl is time to live in seconds, convert to miliseconds

@@ -1,3 +1,7 @@
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
+
 package DNSResolver;
 
 import java.io.*;
@@ -6,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-
-//TODO: SHOULD THESE BE TRY/CATCH BLOCKS OR JUST THROWING EXCEPTIONS
 public class DNSMessage {
 
     /**
@@ -28,6 +30,7 @@ public class DNSMessage {
     private ArrayList<DNSRecord> additionalRecords_;
     private byte[] message_;
 
+    //the DNS Message has the following format:
 //        +---------------------+
 //        |        Header       |
 //        +---------------------+
@@ -40,6 +43,9 @@ public class DNSMessage {
 //        |      Additional     | RRs holding additional information
 //        +---------------------+
 
+    /**
+     * the basic constructor that will initialize the arraylists of the member variables
+     */
     public DNSMessage(){
         questions_ = new ArrayList<>();
         answers_ = new ArrayList<>();
@@ -47,9 +53,15 @@ public class DNSMessage {
         additionalRecords_ = new ArrayList<>();
     }
 
+    /**
+     * this method will decode the incoming messages from the byte array
+     * @param bytes
+     *      the byte array that contains the message
+     * @return
+     *      the newly decoded message
+     * @throws IOException
+     */
     static DNSMessage decodeMessage(byte[] bytes) throws IOException {
-        //call decode message here?
-
         ByteArrayInputStream myStream = new ByteArrayInputStream(bytes);
         DNSMessage newMessage = new DNSMessage();
 
@@ -90,9 +102,12 @@ public class DNSMessage {
 
     /**
      * read the pieces of a domain name starting from the current position of the input stream
-     * Went over this with Chunhao and he said this was right
      * @param inputStream
+     *      the stream containing the name. When this function is called it will be at the position of the
+     *      stream that contains the domain mame
      * @return
+     *      if there is no name, it will return an empty array. Else it will return a string array containing the
+     *      different pieces of the domain name
      */
     String[] readDomainName(InputStream inputStream) throws IOException {
 //        a domain name represented as a sequence of labels, where
@@ -134,10 +149,12 @@ public class DNSMessage {
     }
 
     /**
-     * same, but used when there's compression and we need to find the domain from earlier in the message.
+     * Reads a domain name, but used when there's compression and we need to find the domain from earlier in the message.
      * This method should make a ByteArrayInputStream that starts at the specified byte and call the other version of this method
      * @param firstByte
+     *      this is the byte where the name was previously located
      * @return
+     *      a string array that contains the separate pieces of the domain name
      */
     String[] readDomainName(int firstByte) throws IOException {
         ByteArrayInputStream myStream = new ByteArrayInputStream(message_,firstByte,message_.length - firstByte);
@@ -148,8 +165,11 @@ public class DNSMessage {
     /**
      * build a response based on the request and the answers you intend to send back.
      * @param request
+     *      this is the request that we want to respond to
      * @param answers
+     *      these are the answers we want to send back
      * @return
+     *      a dns message that is the response to the request parameter
      */
     static DNSMessage buildResponse(DNSMessage request, DNSRecord[] answers){
 
@@ -166,8 +186,9 @@ public class DNSMessage {
     }
 
     /**
-     * get the bytes to put in a packet and send back
+     * get the bytes from the message to put in a packet and send back
      * @return
+     *      a byte array that contains all of the bytes from this message
      */
     public byte[] toBytes() throws IOException {
         ByteArrayOutputStream myStream = new ByteArrayOutputStream();
@@ -181,11 +202,8 @@ public class DNSMessage {
             question.writeBytes(myStream, map);
         }
 
-        //write answers
+        //write answers--since we are only sending back one answer this is all we need
         answers_.get(0).writeBytes(myStream, map);
-//        for(DNSRecord answer: answers_){
-//            answer.writeBytes(myStream, map);
-//        }
 
         //write authority records
         for(DNSRecord authority : authorityRecords_){
@@ -206,8 +224,11 @@ public class DNSMessage {
      * (each segment of the domain prefixed with its length, 0 at the end), and add it to the hash map.
      * Otherwise, write a back pointer to where the domain has been seen previously.
      * @param outputStream
+     *      the output stream where we are writing
      * @param map
+     *      the hashmap that we are using to look for domain names
      * @param domainPieces
+     *      a string array containing all the domain name pieces
      */
     static void writeDomainName(ByteArrayOutputStream outputStream, HashMap<String,Integer> map, String[] domainPieces) throws IOException {
         DataOutputStream myStream = new DataOutputStream(outputStream);
@@ -229,12 +250,10 @@ public class DNSMessage {
             Integer location = outputStream.size();
             map.put(domainName,location);
 
+            //write a length-indicating label, and then the piece associated with it
             for (String domainPiece : domainPieces) {
-                //writebytes? with a data output stream?
                 myStream.writeByte(domainPiece.length());
                 myStream.writeBytes(domainPiece);
-//                outputStream.write(domainPiece.length());
-//                outputStream.write(domainPiece.getBytes());
             }
             //write a zero at the end as an end character
             myStream.writeByte(0);
@@ -250,30 +269,10 @@ public class DNSMessage {
      *      the domain name as one string
      */
     static String joinDomainName(String[] pieces){
-        StringBuilder result = new StringBuilder();
-        for(int i = 0; i < pieces.length; i++){
-            if(i < pieces.length -1){
-                result.append(pieces[i]).append(".");
-            }
-            else{
-                result.append(pieces[i]);
-            }
-        }
-
-//        for(String piece : pieces){
-//            result.append(piece).append(".");
-//        }
-
-        //TODO: GET RID OF THIS LOOP
-        //string.join(".", pieces);
-        return result.toString();
+        return String.join(".", pieces);
     }
 
-    /**
-     * the getter for the header of the message
-     * @return
-     *      returns the header portion of this class
-     */
+    //-------------------GETTER METHODS---------------------//
     public DNSHeader getHeader (){
         return header_;
     }

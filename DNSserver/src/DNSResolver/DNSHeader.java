@@ -1,6 +1,8 @@
 package DNSResolver;
 import java.io.*;
-
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
 
 //This class should store all the data provided by the 12 byte DNS header. See the spec for all the fields needed.
 //include getters, but NO setters
@@ -41,8 +43,9 @@ public class DNSHeader {
 //            |                    ARCOUNT                    |
 //            +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 
-
-
+    /**
+     * the basic constructor, initializes flags to zero so it can be used properly
+     */
     public DNSHeader(){
 //        DNSHeader header = new DNSHeader();
         //initialize flags to 0 when created
@@ -50,8 +53,11 @@ public class DNSHeader {
     }
 
     /**
-     * Read the header from an input stream (we'll use a ByteArrayInputStream but we will only use the basic read methods of input stream to read 1 byte, or to fill in a byte array, so we'll be generic).
+     * Read the header from an input stream
+     * (we'll use a ByteArrayInputStream but we will only use the basic read methods of input stream to read 1 byte,
+     * or to fill in a byte array, so we'll be generic).
      * @return
+     *      the newly constructed header
      */
     static DNSHeader decodeHeader(InputStream inStream) throws IOException {
         DataInputStream bytestream = new DataInputStream(inStream);
@@ -105,15 +111,17 @@ public class DNSHeader {
         //0000 0000 0000 1111
         header.rcode_ = header.flags_ & 0x000F;
 
-        System.out.println("printing header values:");
-        int temp = (int)header.id_;
-        System.out.println("ID: " + Integer.toHexString(temp & 0xFFFF));
-        temp = header.flags_;
-        System.out.println("FLAGS: " + Integer.toHexString(temp&0xFFFF));
-        System.out.println("QUESTIONS: " + header.qdcount_);
-        System.out.println("Answer RRs: " + header.ancount_);
-        System.out.println("Authority RRs: " + header.nscount_);
-        System.out.println("Additional RRs: " + header.arcount_);
+
+        //uncomment this stuff to print header values
+//        System.out.println("printing header values:");
+//        int temp = (int)header.id_;
+//        System.out.println("ID: " + Integer.toHexString(temp & 0xFFFF));
+//        temp = header.flags_;
+//        System.out.println("FLAGS: " + Integer.toHexString(temp&0xFFFF));
+//        System.out.println("QUESTIONS: " + header.qdcount_);
+//        System.out.println("Answer RRs: " + header.ancount_);
+//        System.out.println("Authority RRs: " + header.nscount_);
+//        System.out.println("Additional RRs: " + header.arcount_);
 
 
 
@@ -123,16 +131,17 @@ public class DNSHeader {
     /**
      * This will create the header for the response. It will copy some fields from the request
      * @param request
+     *      the request we want to create the response for
      * @param response
+     *      a response. If we were sending back more than one answer in a response this would need to be used to find
+     *      the number of answers in the response
      * @return
+     *      the newly constructed header for the response
      */
     static DNSHeader buildHeaderForResponse(DNSMessage request, DNSMessage response){
         //DNSHeader headerResponse = new DNSHeader();
         DNSHeader headerResponse = request.getHeader();
 
-
-        //TODO: GET NUMBER OF ANSWERS FROM RESPONSE (matt)
-        //headerResponse.ancount_ = (short)response.getNumAnswers();
         headerResponse.ancount_ = 1;
         headerResponse.qr_ = 1;
 
@@ -207,11 +216,11 @@ public class DNSHeader {
      */
     @Override
     public String toString(){
-
-        //TODO: see what this prints, adjust as needed
         return super.toString();
     }
 
+
+    //getter functions for private member variables
     public short getQdcount_(){
         return qdcount_;
     }

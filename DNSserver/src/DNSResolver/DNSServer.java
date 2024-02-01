@@ -1,3 +1,7 @@
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
+
 package DNSResolver;
 
 import java.io.IOException;
@@ -28,7 +32,7 @@ public class DNSServer {
             DatagramSocket socket = new DatagramSocket(8053);
 
             while(true){
-                //TODO: WHY IS THIS 1024? IS THAT ALWAYS THE SIZE
+                System.out.println("====================start of new loop=====================");
                 byte[] requestData = new byte[512];
                 DatagramPacket requestPacket = new DatagramPacket(requestData, requestData.length);
                 socket.receive(requestPacket);
@@ -41,16 +45,16 @@ public class DNSServer {
                 ArrayList<DNSQuestion> questions = requestMessage.getQuestions_();
                 DNSRecord cachedRecord = cache.queryCache(questions.get(0));
 
-                //
                 DNSMessage responseMessage = new DNSMessage();
                 System.out.println(responseMessage.toString());
 
                 if(cachedRecord != null && !cachedRecord.isExpired()){
                     answer = new ArrayList<>();
                     answer.add(cachedRecord);
-
+                    System.out.println("************Found in Cache***********");
                 }
                 else{
+                    System.out.println("************Asking Google***********");
                     //DatagramSocket forwardSocket = new DatagramSocket();
                     InetAddress googleDNS = InetAddress.getByName("8.8.8.8");
                     //why port 53 here?

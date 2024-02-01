@@ -1,5 +1,9 @@
 package DNSResolver;
 
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
+
 import java.util.HashMap;
 
 public class DNSCache {
@@ -30,11 +34,15 @@ public class DNSCache {
      *      null if it was not found
      */
     public DNSRecord queryCache(DNSQuestion query){
+        System.out.println("---------querying cache---------");
         DNSRecord value = localCache.get(query);
 
+        //if it exists and is expired then remove it
         if(value != null && value.isExpired()){
             localCache.remove(query);
+            System.out.println("---------REMOVED FROM CACHE---------");
             return null;
+
         }
 
         return value;
@@ -42,6 +50,8 @@ public class DNSCache {
 
     public void insert(DNSQuestion key, DNSRecord value){
         localCache.put(key, value);
+        System.out.println("--------------Added to Cache---------");
+        System.out.println("size of cache: " + localCache.size());
     }
 
 }

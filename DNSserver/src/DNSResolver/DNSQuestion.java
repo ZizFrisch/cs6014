@@ -1,3 +1,7 @@
+//Elisabeth Frischknecht
+//CS 6014 DNS Resolver
+//February 1, 2024
+
 package DNSResolver;
 
 import java.io.*;
@@ -18,7 +22,6 @@ public class DNSQuestion {
     /**
      * Read a question from the input stream.
      * Due to compression, you may have to ask the DNSMessage containing this question to read some of the fields.
-     * went over this with Chunhao
      */
     static DNSQuestion decodeQuestion(InputStream inputStream, DNSMessage message) throws IOException {
         DNSQuestion question = new DNSQuestion();
@@ -32,14 +35,15 @@ public class DNSQuestion {
         //get the QClass
         question.qClass_ = myStream.readShort();
 
-        System.out.println("**********************************");
-        System.out.println("Printing Question: ");
-        System.out.println("domain name: " + DNSMessage.joinDomainName(question.domainName_));
-        int temp = question.qType_;
-        System.out.println("Type: " + Integer.toHexString(temp & 0xFFFF));
-        temp = question.qClass_;
-        System.out.println("Class: " + Integer.toHexString(temp & 0xFFFF));
 
+        //this block of code prints the parts of the question we receive
+//        System.out.println("**********************************");
+//        System.out.println("Printing Question: ");
+//        System.out.println("domain name: " + DNSMessage.joinDomainName(question.domainName_));
+//        int temp = question.qType_;
+//        System.out.println("Type: " + Integer.toHexString(temp & 0xFFFF));
+//        temp = question.qClass_;
+//        System.out.println("Class: " + Integer.toHexString(temp & 0xFFFF));
 
         return question;
     }
@@ -48,7 +52,9 @@ public class DNSQuestion {
      * Write the question bytes which will be sent to the client.
      * The hash map is used for us to compress the message, see the DNSMessage class below.
      * @param outStream
+     *      the stream that we will be writing bytes to
      * @param map
+     *      holds the domain names we have already seen for the questions and records classes
      */
     void writeBytes(ByteArrayOutputStream outStream, HashMap<String,Integer> map) throws IOException {
         DNSMessage.writeDomainName(outStream, map, domainName_);
@@ -57,9 +63,6 @@ public class DNSQuestion {
         myStream.writeShort(qType_);
         myStream.writeShort(qClass_);
     }
-
-
-
 
 //let following functions be taken care of by IDE
     @Override
