@@ -109,6 +109,11 @@ public class DNSMessage {
         //read the first label
         byte length = myStream.readByte();
 
+        //if the first byte is 0, indicating an empty name, return an empty array so we avoid writing extra bytes
+        if(length == 0){
+            return new String[0];
+        }
+
         //make an arraylist of strings
         ArrayList<String> pieces = new ArrayList<>();
 
@@ -213,16 +218,15 @@ public class DNSMessage {
             //the integer in the hashmap is the pointer
             //the index of where it is being stored in the response message
             //write the compression thing
-            //TODO: HOW TO WRITE THIS WITH COMPRESSION?
+
             int pointer = map.get(domainName);
             pointer |= (0xC000);
 
-            //TODO: CHECK IF THIS IS RIGHT, WE'RE WRITING AN INT AS A SHORT
             myStream.writeShort (pointer);
         }
         else{
             //add to the hashmap
-            Integer location = myStream.size();
+            Integer location = outputStream.size();
             map.put(domainName,location);
 
             for (String domainPiece : domainPieces) {
@@ -232,12 +236,9 @@ public class DNSMessage {
 //                outputStream.write(domainPiece.length());
 //                outputStream.write(domainPiece.getBytes());
             }
-
+            //write a zero at the end as an end character
+            myStream.writeByte(0);
         }
-        //write a zero at the end as an end character
-//        byte zero = 0x00;
-//        outputStream.write(zero);
-        myStream.writeByte(0);
     }
 
 

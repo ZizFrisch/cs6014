@@ -134,7 +134,6 @@ public class DNSHeader {
         //TODO: GET NUMBER OF ANSWERS FROM RESPONSE (matt)
         //headerResponse.ancount_ = (short)response.getNumAnswers();
         headerResponse.ancount_ = 1;
-        //TODO: DOES THIS WORK? AN COUNT == 1?
         headerResponse.qr_ = 1;
 
         return headerResponse;
