@@ -1,0 +1,2 @@
+total average delay: 204.22803565891485 ms
+average queuing delay: 46.13903565891469 ms

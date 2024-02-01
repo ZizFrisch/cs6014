@@ -1,0 +1,7 @@
+1. I am dropping out points that don't contain incomplete data (a *) 
+
+part B: 
+
+Suppose one of the three traceroute delay values between the source and a given router hop turns out to be unusually high. What are two possible causes for this unusually high delay?
+
+1. There could be an increased amount of traffic which can increase the queuing delay. It could be stuck in either the processing queue or the transmission queue
