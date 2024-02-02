@@ -14,7 +14,6 @@ public class DNSMessage {
 
     /**
      * This corresponds to an entire DNS Message. It should contain:
-     *
      * the DNS Header
      * an array of questions
      * an array of answers
@@ -67,7 +66,6 @@ public class DNSMessage {
 
         // store the byte array containing the complete message
         newMessage.message_ = Arrays.copyOf(bytes, bytes.length);
-
 
         //decode the header
         newMessage.header_ = DNSHeader.decodeHeader(myStream);
@@ -177,6 +175,7 @@ public class DNSMessage {
 
         response.answers_ = new ArrayList<>(Arrays.asList(answers));
         response.header_ = DNSHeader.buildHeaderForResponse(request,response);
+        System.out.println("RD sset to: " + response.header_.getRD_());
         response.questions_ = request.questions_;
 
         response.authorityRecords_ = request.authorityRecords_;
@@ -203,7 +202,11 @@ public class DNSMessage {
         }
 
         //write answers--since we are only sending back one answer this is all we need
-        answers_.get(0).writeBytes(myStream, map);
+        //answers_.get(0).writeBytes(myStream, map);
+        if(!answers_.isEmpty()){
+            answers_.get(0).writeBytes(myStream,map);
+        }
+
 
         //write authority records
         for(DNSRecord authority : authorityRecords_){

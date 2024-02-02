@@ -31,6 +31,8 @@ public class DNSServer {
         try {
             DatagramSocket socket = new DatagramSocket(8053);
 
+
+            //TODO: ADD GOOGLE SOCKET?
             while(true){
                 System.out.println("====================start of new loop=====================");
                 byte[] requestData = new byte[512];
@@ -40,14 +42,16 @@ public class DNSServer {
                 //turn the request Packet into a DNSMessage and decode it (the message class decodes all pieces)
                 DNSMessage requestMessage = DNSMessage.decodeMessage(requestPacket.getData());
                 System.out.println("request message decoded");
-                System.out.println(requestMessage.toString());
+                //System.out.println(requestMessage.toString());
 
+                //check the cache for the question
                 ArrayList<DNSQuestion> questions = requestMessage.getQuestions_();
                 DNSRecord cachedRecord = cache.queryCache(questions.get(0));
 
                 DNSMessage responseMessage = new DNSMessage();
-                System.out.println(responseMessage.toString());
+                //System.out.println(responseMessage.toString());
 
+                //if found, and not expired
                 if(cachedRecord != null && !cachedRecord.isExpired()){
                     answer = new ArrayList<>();
                     answer.add(cachedRecord);
@@ -69,8 +73,14 @@ public class DNSServer {
                     responseMessage = DNSMessage.decodeMessage(responsePacket.getData());
                     System.out.println("decoded response from google");
 
+                    //add the answer to the cache
                     answer = responseMessage.getAnswers_();
-                    cache.insert(questions.get(0), answer.get(0));
+
+                    if(!answer.isEmpty()){
+                        cache.insert(questions.get(0), answer.get(0));
+                        System.out.println("Invalid Domain Name");
+                    }
+
                 }
 
                 System.out.println("send back to the user");
@@ -83,6 +93,7 @@ public class DNSServer {
         catch (IOException e){
             e.printStackTrace();
         }
+
     }
 }
 

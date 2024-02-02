@@ -51,7 +51,7 @@ public class DNSRecord {
         boolean compressFlag = ( (compress & 0xC000) ==0xC000);
 
         if(compressFlag){//compression condition
-            //compress ^= (byte) 0xC0;
+            // 0011 1111 1111 1111
             compress &= (short) 0x3FFF;
             record.domainName_ = message.readDomainName(compress);
         }

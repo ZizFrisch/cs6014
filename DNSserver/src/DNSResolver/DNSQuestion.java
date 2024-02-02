@@ -5,6 +5,7 @@
 package DNSResolver;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class DNSQuestion {
@@ -72,7 +73,28 @@ public class DNSQuestion {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+       // return this.hashCode() == obj.hashCode();
+//        if(!(obj instanceof DNSQuestion)){
+//            return false;
+//        }
+//
+//        DNSQuestion otherQuestion = (DNSQuestion) obj;
+//
+//        return (Arrays.equals(domainName_, otherQuestion.domainName_) && qType_ == otherQuestion.qType_ && qClass_ == otherQuestion.qClass_);
+        if (this == obj){
+            return true;
+        }
+        if (this.getClass() != obj.getClass()){
+            return false;
+        }
+        DNSQuestion question = (DNSQuestion) obj;
+        if (this.qClass_ != question.qClass_){
+            return false;
+        }
+        if (this.qType_ != question.qType_){
+            return false;
+        }
+        return Arrays.equals(this.domainName_, question.domainName_);
     }
 
     @Override

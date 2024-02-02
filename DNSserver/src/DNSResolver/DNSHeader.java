@@ -142,8 +142,14 @@ public class DNSHeader {
         //DNSHeader headerResponse = new DNSHeader();
         DNSHeader headerResponse = request.getHeader();
 
-        headerResponse.ancount_ = 1;
+        if(response.getNumAnswers() > 0){
+            headerResponse.ancount_ = 1;
+        }
+
         headerResponse.qr_ = 1;
+
+        //recursion is not supported so set this to 0
+        headerResponse.rd_ = 0;
 
         return headerResponse;
     }
@@ -156,6 +162,8 @@ public class DNSHeader {
      */
     void writeBytes(OutputStream outStream) throws IOException {
         DataOutputStream bytestream = new DataOutputStream(outStream);
+
+        flags_ = 0;
 
         //build the flags line
         //parse the flags_ for all of the other pieces of the header
@@ -199,7 +207,7 @@ public class DNSHeader {
         //0000 0000 0000 1111
         flags_ |= (short)(rcode_);
 
-
+        System.out.printf("flags: %x , %d \n",flags_, rd_);
         //write all the bytes to the output stream
 
         bytestream.writeShort(id_);
@@ -235,6 +243,10 @@ public class DNSHeader {
 
     public short getArcount_(){
         return arcount_;
+    }
+
+    public int getRD_(){
+        return rd_;
     }
 
 
