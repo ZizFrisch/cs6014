@@ -293,8 +293,14 @@ public class DNSMessage {
     }
 
     @Override
-    public String toString(){
-       return super.toString();
+    public String toString() {
+        return "DNSMessage{" +
+                "header_=" + header_ +
+                ", questions_=" + questions_ +
+                ", answers_=" + answers_ +
+                ", authorityRecords_=" + authorityRecords_ +
+                ", additionalRecords_=" + additionalRecords_ +
+                ", message_=" + Arrays.toString(message_) +
+                '}';
     }
-
 }

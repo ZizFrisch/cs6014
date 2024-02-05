@@ -66,12 +66,6 @@ public class DNSQuestion {
         myStream.writeShort(qClass_);
     }
 
-//let following functions be taken care of by IDE
-//    @Override
-//    public String toString(){
-//        return super.toString();
-//    }
-
     @Override
     public String toString() {
         return "DNSQuestion{" +
@@ -80,38 +74,6 @@ public class DNSQuestion {
                 ", qClass_=" + qClass_ +
                 '}';
     }
-
-//    @Override
-//    public boolean equals(Object obj) {
-//       // return this.hashCode() == obj.hashCode();
-////        if(!(obj instanceof DNSQuestion)){
-////            return false;
-////        }
-////
-////        DNSQuestion otherQuestion = (DNSQuestion) obj;
-////
-////        return (Arrays.equals(domainName_, otherQuestion.domainName_) && qType_ == otherQuestion.qType_ && qClass_ == otherQuestion.qClass_);
-//        if (this == obj){
-//            return true;
-//        }
-//        if (this.getClass() != obj.getClass()){
-//            return false;
-//        }
-//        DNSQuestion question = (DNSQuestion) obj;
-//        if (this.qClass_ != question.qClass_){
-//            return false;
-//        }
-//        if (this.qType_ != question.qType_){
-//            return false;
-//        }
-//        return Arrays.equals(this.domainName_, question.domainName_);
-//    }
-
-//    @Override
-//    public int hashCode() {
-//        return super.hashCode();
-//    }
-
 
     @Override
     public boolean equals(Object o) {

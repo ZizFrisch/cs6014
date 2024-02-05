@@ -5,6 +5,7 @@
 package DNSResolver;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -90,11 +91,6 @@ public class DNSRecord {
         myStream.write(rdata_);
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     /**
      * return whether the creation date + the time to live is after the current time. The Date and Calendar classes will be useful for this.
      * @return
@@ -106,5 +102,18 @@ public class DNSRecord {
         Date currentTime = new Date();
 
         return (currentTime.getTime() - creationDate_.getTime() > ttl_miliseconds );
+    }
+
+    @Override
+    public String toString() {
+        return "DNSRecord{" +
+                "domainName_=" + Arrays.toString(domainName_) +
+                ", type_=" + type_ +
+                ", class_=" + class_ +
+                ", ttl_=" + ttl_ +
+                ", rdLength_=" + rdLength_ +
+                ", rdata_=" + Arrays.toString(rdata_) +
+                ", creationDate_=" + creationDate_ +
+                '}';
     }
 }
