@@ -175,7 +175,7 @@ public class DNSMessage {
 
         response.answers_ = new ArrayList<>(Arrays.asList(answers));
         response.header_ = DNSHeader.buildHeaderForResponse(request,response);
-        System.out.println("RD sset to: " + response.header_.getRD_());
+        //System.out.println("RD sset to: " + response.header_.getRD_());
         response.questions_ = request.questions_;
 
         response.authorityRecords_ = request.authorityRecords_;

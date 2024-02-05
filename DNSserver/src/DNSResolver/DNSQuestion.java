@@ -7,6 +7,7 @@ package DNSResolver;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DNSQuestion {
     String[] domainName_;
@@ -66,39 +67,64 @@ public class DNSQuestion {
     }
 
 //let following functions be taken care of by IDE
-    @Override
-    public String toString(){
-        return super.toString();
-    }
+//    @Override
+//    public String toString(){
+//        return super.toString();
+//    }
 
     @Override
-    public boolean equals(Object obj) {
-       // return this.hashCode() == obj.hashCode();
-//        if(!(obj instanceof DNSQuestion)){
+    public String toString() {
+        return "DNSQuestion{" +
+                "domainName_=" + Arrays.toString(domainName_) +
+                ", qType_=" + qType_ +
+                ", qClass_=" + qClass_ +
+                '}';
+    }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//       // return this.hashCode() == obj.hashCode();
+////        if(!(obj instanceof DNSQuestion)){
+////            return false;
+////        }
+////
+////        DNSQuestion otherQuestion = (DNSQuestion) obj;
+////
+////        return (Arrays.equals(domainName_, otherQuestion.domainName_) && qType_ == otherQuestion.qType_ && qClass_ == otherQuestion.qClass_);
+//        if (this == obj){
+//            return true;
+//        }
+//        if (this.getClass() != obj.getClass()){
 //            return false;
 //        }
-//
-//        DNSQuestion otherQuestion = (DNSQuestion) obj;
-//
-//        return (Arrays.equals(domainName_, otherQuestion.domainName_) && qType_ == otherQuestion.qType_ && qClass_ == otherQuestion.qClass_);
-        if (this == obj){
-            return true;
-        }
-        if (this.getClass() != obj.getClass()){
-            return false;
-        }
-        DNSQuestion question = (DNSQuestion) obj;
-        if (this.qClass_ != question.qClass_){
-            return false;
-        }
-        if (this.qType_ != question.qType_){
-            return false;
-        }
-        return Arrays.equals(this.domainName_, question.domainName_);
+//        DNSQuestion question = (DNSQuestion) obj;
+//        if (this.qClass_ != question.qClass_){
+//            return false;
+//        }
+//        if (this.qType_ != question.qType_){
+//            return false;
+//        }
+//        return Arrays.equals(this.domainName_, question.domainName_);
+//    }
+
+//    @Override
+//    public int hashCode() {
+//        return super.hashCode();
+//    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DNSQuestion that = (DNSQuestion) o;
+        return qType_ == that.qType_ && qClass_ == that.qClass_ && Arrays.equals(domainName_, that.domainName_);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = Objects.hash(qType_, qClass_);
+        result = 31 * result + Arrays.hashCode(domainName_);
+        return result;
     }
 }

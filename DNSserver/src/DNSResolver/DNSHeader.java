@@ -149,6 +149,7 @@ public class DNSHeader {
         headerResponse.qr_ = 1;
 
         //recursion is not supported so set this to 0
+        //Matt told me to set this bit to 0
         headerResponse.rd_ = 0;
 
         return headerResponse;
