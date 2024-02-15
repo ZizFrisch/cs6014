@@ -6,7 +6,7 @@ public class experiment {
         int[] data = new int[sample_size];
 //        Network.makeSimpleNetwork(); //use this for testing/debugging
         for(int i = 0; i < sample_size; i++){
-            Network.makeProbablisticNetwork(200); //use this for the plotting part
+            Network.makeProbablisticNetwork(10); //use this for the plotting part
             Network.dump();
 
             Network.startup();
